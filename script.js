@@ -1,46 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Medicamentos</title>
+document.getElementById("medForm").addEventListener("submit", function (event) {
+    event.preventDefault();
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    const nome = document.getElementById("nome").value.trim();
+    const dosagem = document.getElementById("dosagem").value.trim();
+    const horario = document.getElementById("horario").value;
 
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    const lista = document.getElementById("listaMedicamentos");
 
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Controle de Medicamentos</h1>
+    const item = document.createElement("li");
 
-        <form id="medForm" class="card p-4 shadow">
+    item.className = "list-group-item d-flex justify-content-between align-items-center";
 
-            <div class="mb-3">
-                <label class="form-label">Nome do Medicamento</label>
-                <input type="text" id="nome" class="form-control" required>
-            </div>
+    item.innerHTML = `
+        <div>
+            <strong>${nome}</strong><br>
+            <small>Dosagem: ${dosagem} | Horário: ${horario}</small>
+        </div>
 
-            <div class="mb-3">
-                <label class="form-label">Dosagem</label>
-                <input type="text" id="dosagem" class="form-control" required>
-            </div>
+        <button type="button" class="btn btn-danger btn-sm">
+            Excluir
+        </button>
+    `;
 
-            <div class="mb-3">
-                <label class="form-label">Horário</label>
-                <input type="time" id="horario" class="form-control" required>
-            </div>
+    const botaoExcluir = item.querySelector("button");
 
-            <button type="submit" class="btn btn-primary">
-                Adicionar
-            </button>
+    botaoExcluir.addEventListener("click", function () {
+        item.remove();
+    });
 
-        </form>
+    lista.appendChild(item);
 
-        <ul id="listaMedicamentos" class="list-group mt-4"></ul>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+    document.getElementById("medForm").reset();
+});
