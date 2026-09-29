@@ -39,13 +39,23 @@ function adicionarMedicamentoNaTela(medicamento) {
             </small>
         </div>
 
-        <button
-            type="button"
-            class="btn btn-danger btn-sm"
-            onclick="excluirMedicamento(${medicamento.id}, this)"
-        >
-            Excluir
-        </button>
+        <div>
+            <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                onclick="excluirMedicamento(${medicamento.id}, this)"
+            >
+                Excluir
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-warning btn-sm"
+                onclick="editarMedicamento(${medicamento.id})"
+            >
+                Editar
+            </button>
+        </div>
     `;
 
     lista.appendChild(item);
@@ -126,6 +136,41 @@ async function excluirMedicamento(id, botao) {
         console.error(erro);
 
         alert("Erro ao conectar com o servidor.");
+    }
+}
+
+
+async function editarMedicamento(id) {
+
+    try {
+
+        const resposta = await fetch("/api/medicamentos");
+
+        const medicamentos = await resposta.json();
+
+        const medicamento = medicamentos.find(m => m.id === id);
+
+        if (!medicamento) {
+            alert("Medicamento não encontrado.");
+            return;
+        }
+
+        document.getElementById("nome").value =
+            medicamento.nome_medicamento;
+
+        document.getElementById("dosagem").value =
+            medicamento.dosagem;
+
+        document.getElementById("horario").value =
+            medicamento.horario;
+
+        alert("Dados carregados no formulário. Agora você pode editar.");
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        alert("Erro ao carregar o medicamento.");
     }
 }
 
