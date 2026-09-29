@@ -49,6 +49,32 @@ app.post("/api/medicamentos", async (req, res) => {
     }
 });
 
+app.put("/api/medicamentos/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome_medicamento, dosagem, horario, observacoes } = req.body;
+
+        await db.query(
+            `UPDATE medicamentos
+             SET nome_medicamento = ?,
+                 dosagem = ?,
+                 horario = ?,
+                 observacoes = ?
+             WHERE id = ? AND usuario_id = 1`,
+            [nome_medicamento, dosagem, horario, observacoes || null, id]
+        );
+
+        res.json({
+            mensagem: "Medicamento atualizado com sucesso"
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            erro: "Erro ao atualizar medicamento"
+        });
+    }
+});
 app.delete("/api/medicamentos/:id", async (req, res) => {
     try {
         const { id } = req.params;
